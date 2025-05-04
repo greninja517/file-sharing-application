@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: 529088299058.dkr.ecr.ap-south-1.amazonaws.com/dev/backend:latest
+        image: greninja517/backend:1.0
         resources:
           limits:
             memory: "512Mi"
@@ -26,18 +26,31 @@ spec:
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: mysql-secret
+                name: backend-secret
                 key: db_username
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: mysql-secret
+                name: backend-secret
                 key: db_password
           - name: DB_URL
             valueFrom:
               configMapKeyRef:
-                name: mysql-cfg
+                name: backend-cfg
                 key: database_url
+          - name: FILE_STORAGE_DIRECTORY
+            valueFrom:
+              configMapKeyRef:
+                name: backend-cfg
+                key: file_storage_dir 
+        volumeMounts:
+        - name: backend-vol
+          mountPath: "/app/file_storage/"
+      volumes: 
+        - name: backend-vol
+          persistentVolumeClaim:
+            claimName: backend-pvc
+        
 
             
  

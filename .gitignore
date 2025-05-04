@@ -1,5 +1,6 @@
 # kubernetes and deployement related
-k8s-manifests/**/secrets.yaml
+k8s-manifests/**/*secret*
+helm/**/*secret*
 
 # backend related 
 backend/.env*

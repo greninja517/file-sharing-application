@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-sts
+  namespace: 3-tier-app
+spec:
+  selector:
+    matchLabels:
+      app: mydb
+  serviceName: mysql-headless
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mydb
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:latest
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: root_password
+              name: db-secret
+        volumeMounts:
+        - name: mysql-vol
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-vol
+    spec:
+      resources:
+        requests:
+          storage: 5Gi
+      volumeMode: Filesystem
+      storageClassName: mysql-storage
+      accessModes:
+        - ReadWriteOnce
