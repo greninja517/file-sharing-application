@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         GITHUB_REPO_URL    = "https://github.com/xyrova/file-sharer.git"
-        GIT_DEFAULT_BRANCH = "anjal"
+        GIT_DEFAULT_BRANCH = "main"
         FRONTEND_ECR_REPO  = "529088299058.dkr.ecr.ap-south-1.amazonaws.com/dev/frontend"
         BACKEND_ECR_REPO   = "529088299058.dkr.ecr.ap-south-1.amazonaws.com/dev/backend"
         AWS_REGION         = "ap-south-1"
