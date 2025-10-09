@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: file-sharer-backend:v1
+    container_name: file-sharer-backend
+    environment:
+      DB_URL: jdbc:mysql://filesharer-mysql-db.chyiaqsamgj6.ap-south-1.rds.amazonaws.com:3306/fileSharer?createDatabaseIfNotExist=true
+      DB_USERNAME: admin
+      DB_PASSWORD: admin123
+      FILE_STORAGE_DIRECTORY: "/app/file_storage/"
+    dns:
+      - 8.8.8.8
+    networks:
+      - file-sharer-net
+
+  frontend:
+    depends_on: [ backend ]
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: file-sharer-frontend:v1
+    container_name: file-sharer-frontend
+    ports:
+      - "80:80"
+    dns:
+      - 8.8.8.8
+    networks:
+      - file-sharer-net
+
+networks:
+  file-sharer-net:
+    driver: bridge
